@@ -1,39 +1,39 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>PARTY TIME</title>
-    <link rel="icon" href="hamburger.png">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TextField with Submit</title>
+    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Enter Text Below</h1>
+        <div class="d-flex align-items-center">
+            <!-- Input Group -->
+            <div class="input-group me-3" style="max-width: 300px;">
+                <input type="text" id="userInput" class="form-control" placeholder="Type something..." />
+                <button class="btn btn-primary" id="submitButton">Submit</button>
+            </div>
+            <!-- Placeholder for showing the submitted text -->
+            <div id="output" class="ms-3 text-success fw-bold"></div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
     <script src="js/bootstrap.bundle.min.js"></script>
-  </head>
-  <body style="background-color:#1cff33;">
-    
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <script src="js/bootstrap.bundle.min.js"></script>
-
-    <h1>HELLO!</h1>
-    <div style="float:left; margin:0; width:33%;">
-        <img src="raccoon-birthday.gif" alt="gif">
-    </div>
-    <div style="float:left; margin:0;width:33%;">
-        <img src="raccoon-dance.gif" alt="gif">
-    </div>
-    <div style="float:left; margin:0;width:33%">
-        <img src="raccoon-pizza-dj.gif" alt="gif">
-    </div>
-
-    <img src="invite.jpg" alt="invite">
-
-    <p>Jokes on you. There is no more information. See you there.</p>
-    <div style="float:left; margin:0; width:33%;">
-        <img src="raccoon-birthday.gif" alt="gif">
-    </div>
-    <div style="float:left; margin:0;width:33%;">
-        <img src="raccoon-dance.gif" alt="gif">
-    </div>
-    <div style="float:left; margin:0;width:33%">
-        <img src="raccoon-pizza-dj.gif" alt="gif">
-    </div>
-  </body>
+    <!-- Custom JavaScript -->
+    <script>
+        document.getElementById('submitButton').addEventListener('click', function () {
+            const input = document.getElementById('userInput').value;
+            const output = document.getElementById('output');
+            if (input.trim()) {
+                output.textContent = input; // Display the text next to the input field
+            } else {
+                output.textContent = ''; // Clear output if input is empty
+            }
+        });
+    </script>
+</body>
 </html>
-

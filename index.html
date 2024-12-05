@@ -163,5 +163,48 @@
             }
         });
     </script>
+    <!-- Firebase SDK -->
+    <script type="module">
+      // Import the functions you need from the SDKs you need
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+      import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-analytics.js";
+      // TODO: Add SDKs for Firebase products that you want to use
+      // https://firebase.google.com/docs/web/setup#available-libraries
+
+      // Your web app's Firebase configuration
+      // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+      const firebaseConfig = {
+        apiKey: "AIzaSyAWzbSWohRizdXm1_aWV-AqeyCJLjijpIY",
+        authDomain: "oii-leaderboard.firebaseapp.com",
+        projectId: "oii-leaderboard",
+        storageBucket: "oii-leaderboard.firebasestorage.app",
+        messagingSenderId: "50958797668",
+        appId: "1:50958797668:web:8a08503469366d10cb4871",
+        measurementId: "G-5TE6211QMP"
+      };
+
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const analytics = getAnalytics(app);
+
+
+      // Example of submitting data to the Cloud Function
+      function submitScore(name, score) {
+          fetch('https://<region>-<project-id>.cloudfunctions.net/addScore', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ name, score })
+          })
+          .then(response => response.text())
+          .then(data => console.log(data))
+          .catch(error => console.error('Error:', error));
+      }
+
+      // Example usage
+      submitScore('Alice', 120);
+
+    </script>
 </body>
 </html>

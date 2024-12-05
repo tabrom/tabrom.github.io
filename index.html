@@ -115,10 +115,10 @@
           if (name && !isNaN(score)) {
               if (competition === 'Cemantle') {
                   leaderboard_cemantle.push({ name, score }); // Add new entry to the leaderboard
-                  updateLeaderboard(); // Update the leaderboard table
+                  updateLeaderboard(competition); // Update the leaderboard table
               } else if (competition === 'Pedantle') {
                   leaderboard_pedantle.push({ name, score }); // Add new entry to the leaderboard
-                  updateLeaderboard(); // Update the leaderboard table
+                  updateLeaderboard(competition); // Update the leaderboard table
               } else {
                   alert('Please select a valid competition.');
               }

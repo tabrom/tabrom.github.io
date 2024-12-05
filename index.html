@@ -5,129 +5,163 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Leaderboard</title>
     <style>
-      body {
-          background-color: #002147; /* Set background color to ox blue */
-          color: white; /* Set text color to white */	
-      }
-  </style>
+        body {
+            background-color: #002147; /* Set background color to ox blue */
+            color: white; /* Set text color to white */
+        }
+        .form-control, .form-select {
+            color: black; /* Ensure form input text is visible */
+        }
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 200px;
+            background-color: #333;
+            padding-top: 20px;
+        }
+        .sidebar a {
+            padding: 10px 15px;
+            text-decoration: none;
+            font-size: 18px;
+            color: white;
+            display: block;
+        }
+        .sidebar a:hover {
+            background-color: #575757;
+        }
+        .content {
+            margin-left: 220px; /* Same as the width of the sidebar */
+            padding: 20px;
+        }
+    </style>
     <!-- Bootstrap CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <div class="container mt-5">
-        <h1 class="text-center">Leaderboards</h1>
+    <div class="sidebar">
+        <a href="#cemantle">Cemantle Leaderboard</a>
+        <a href="#pedantle">Pedantle Leaderboard</a>
+        <a href="#submit-score">Submit Your Score</a>
+    </div>
 
-        <!-- Leaderboard Table -->
-        <div class="mt-4">
-            <h3>Cemantle Leaderboard</h3>
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Name</th>
-                        <th>Score</th>
-                    </tr>
-                </thead>
-                <tbody id="cemantle_leaderboard">
-                    <!-- Entries will be dynamically added here -->
-                </tbody>
-            </table>
+    <div class="content">
+        <div class="container mt-5">
+            <h1 class="text-center">OII Leaderboards</h1>
+
+            <!-- Cemantle Leaderboard Table -->
+            <div id="cemantle" class="mt-4">
+                <h3>Cemantle Leaderboard</h3>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>#Guesses</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cemantle_leaderboard">
+                        <!-- Entries will be dynamically added here -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pedantle Leaderboard Table -->
+            <div id="pedantle" class="mt-5">
+                <h3>Pedantle Leaderboard</h3>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>#Guesses</th>
+                        </tr>
+                    </thead>
+                    <tbody id="pedantle_leaderboard">
+                        <!-- Entries will be dynamically added here -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Input Form -->
+            <div id="submit-score" class="mt-5 d-flex justify-content-center">
+                <div class="col-md-8">
+                    <h3 class="text-center mb-3">Submit Your Score</h3>
+                    <form id="scoreForm" class="row g-3">
+                        <div class="col-md-4">
+                            <input type="text" id="name" class="form-control" placeholder="Enter your name" required>
+                        </div>
+                        <div class="col-md-4">
+                            <input type="number" id="score" class="form-control" placeholder="Enter your score" required>
+                        </div>
+                        <div class="col-md-3">
+                            <select id="competition" class="form-select" required>
+                                <option value="" disabled selected>Select competition</option>
+                                <option value="Cemantle">Cemantle</option>
+                                <option value="Pedantle">Pedantle</option>
+                            </select>
+                        </div>
+                        <div class="col-md-12 text-center">
+                            <button type="submit" class="btn btn-primary">Add to Leaderboard</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
+    </div>
+    <!-- Bootstrap JS -->
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JavaScript -->
+    <script>
+        const leaderboard_cemantle = [];
+        const leaderboard_pedantle = [];
 
-        
-    <!-- Second Leaderboard Table -->
-    <div class="mt-4">
-      <h3>Pedantle Rankings</h3>
-      <table class="table table-striped">
-    <thead>
-        <tr>
-      <th>#</th>
-      <th>Name</th>
-      <th>Score</th>
-        </tr>
-    </thead>
-    <tbody id="pedantle_leaderboard">
-        <!-- Entries will be dynamically added here -->
-    </tbody>
-      </table>
-  </div>
-  </div>
+        // Function to update the leaderboard table
+        function updateLeaderboard(competition) {
+            const tableBody = competition === 'Cemantle' ? document.getElementById('cemantle_leaderboard') : document.getElementById('pedantle_leaderboard');
+            const leaderboard = competition === 'Cemantle' ? leaderboard_cemantle : leaderboard_pedantle;
+            tableBody.innerHTML = ''; // Clear the current leaderboard
 
-  <!-- Input Form -->
-  <div class="mt-4 d-flex justify-content-center"></div>
-      <h3>Submit Your Score</h3>
-      <form id="scoreForm" class="row g-3 text-center">
-          <div class="col-md-4">
-              <input type="text" id="name" class="form-control" placeholder="Enter your name" required>
-          </div>
-          <div class="col-md-4">
-              <input type="number" id="score" class="form-control" placeholder="Enter your score" required>
-          </div>
-          <div class="col-md-2">
-              <select id="competition" class="form-select" required>
-                <option value="" disabled selected>Select competition</option>
-                <option value="Cemantle">Cemantle</option>
-                <option value="Pedantle">Pedantle</option>
-              </select>
-          </div>
-          <div class="col-md-12 text-center">
-              <button type="submit" class="btn btn-primary">Add to Leaderboard</button>
-          </div>
-      </form>
-  </div>
+            // Sort the leaderboard by score in descending order
+            leaderboard.sort((a, b) => b.score - a.score);
 
-  <!-- Bootstrap JS -->
-  <script src="js/bootstrap.bundle.min.js"></script>
-  <!-- Custom JavaScript -->
-  <script>
-      const leaderboard_cemantle = [];
-      const leaderboard_pedantle = [];
+            // Add each entry to the table
+            leaderboard.forEach((entry, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${entry.name}</td>
+                    <td>${entry.score}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
 
-      // Function to update the leaderboard table
-      function updateLeaderboard(competition) {
-          const tableBody = competition === 'Cemantle' ? document.getElementById('cemantle_leaderboard') : document.getElementById('pedantle_leaderboard');
-          const leaderboard = competition === 'Cemantle' ? leaderboard_cemantle : leaderboard_pedantle;
-          tableBody.innerHTML = ''; // Clear the current leaderboard
+        // Handle form submission
+        document.getElementById('scoreForm').addEventListener('submit', function (e) {
+            e.preventDefault(); // Prevent form from refreshing the page
 
-          // Sort the leaderboard by score in descending order
-          leaderboard.sort((a, b) => b.score - a.score);
+            const name = document.getElementById('name').value.trim();
+            const score = parseInt(document.getElementById('score').value, 10);
+            const competition = document.getElementById('competition').value;
 
-          // Add each entry to the table
-          leaderboard.forEach((entry, index) => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${index + 1}</td>
-            <td>${entry.name}</td>
-            <td>${entry.score}</td>
-        `;
-        tableBody.appendChild(row);
-          });
-      }
-
-      // Handle form submission
-      document.getElementById('scoreForm').addEventListener('submit', function (e) {
-          e.preventDefault(); // Prevent form from refreshing the page
-
-          const name = document.getElementById('name').value.trim();
-          const score = parseInt(document.getElementById('score').value, 10);
-          const competition = document.getElementById('competition').value;
-
-          if (name && !isNaN(score)) {
-              if (competition === 'Cemantle') {
-                  leaderboard_cemantle.push({ name, score }); // Add new entry to the leaderboard
-                  updateLeaderboard(competition); // Update the leaderboard table
-              } else if (competition === 'Pedantle') {
-                  leaderboard_pedantle.push({ name, score }); // Add new entry to the leaderboard
-                  updateLeaderboard(competition); // Update the leaderboard table
-              } else {
-                  alert('Please select a valid competition.');
-              }
-              // Clear the form
-              document.getElementById('scoreForm').reset();
-          } else {
-              alert('Please enter a valid name and score.');
-          }
-      });
-  </script>
+            if (name && !isNaN(score)) {
+                if (competition === 'Cemantle') {
+                    leaderboard_cemantle.push({ name, score }); // Add new entry to the leaderboard
+                    updateLeaderboard(competition); // Update the leaderboard table
+                } else if (competition === 'Pedantle') {
+                    leaderboard_pedantle.push({ name, score }); // Add new entry to the leaderboard
+                    updateLeaderboard(competition); // Update the leaderboard table
+                } else {
+                    alert('Please select a valid competition.');
+                }
+                // Clear the form
+                document.getElementById('scoreForm').reset();
+            } else {
+                alert('Please enter a valid name and score.');
+            }
+        });
+    </script>
 </body>
 </html>

@@ -189,8 +189,11 @@
 
 
         async function updateLeaderboard(competition) {
+            console.log("updating leaderboard for competition ", competition);
             const tableBody = competition === 'Cemantle' ? document.getElementById('cemantle_leaderboard') : document.getElementById('pedantle_leaderboard');
+            console.log('fetching leaderboard');
             const leaderboard = await fetchLeaderboard(competition);
+            console.log('fetching done')
             tableBody.innerHTML = ''; // Clear the current leaderboard
 
             // Sort the leaderboard by score in descending order

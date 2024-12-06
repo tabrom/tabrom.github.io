@@ -133,13 +133,13 @@
         const app = initializeApp(firebaseConfig);
 
 
-        function submitScore(name, score) {
+        function submitScore(name, score, competition) {
           fetch('https://us-central1-oii-leaderboard.cloudfunctions.net/addScore', {
               method: 'POST',
               headers: {
                   'Content-Type': 'application/json'
               },
-              body: JSON.stringify({ name, score })
+              body: JSON.stringify({ name, score, competition })
           })
           .then(response => response.text())
           .then(data => console.log(data))
@@ -149,6 +149,38 @@
         const leaderboard_cemantle = [];
         const leaderboard_pedantle = [];
 
+        // import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+
+        // const db = getFirestore(app);
+
+        // async function fetchLeaderboard(competition) {
+        //     const querySnapshot = await getDocs(collection(db, competition.toLowerCase() + '_leaderboard'));
+        //     const leaderboard = [];
+        //     querySnapshot.forEach((doc) => {
+        //         leaderboard.push(doc.data());
+        //     });
+        //     return leaderboard;
+        // }
+
+        // async function updateLeaderboard(competition) {
+        //     const tableBody = competition === 'Cemantle' ? document.getElementById('cemantle_leaderboard') : document.getElementById('pedantle_leaderboard');
+        //     const leaderboard = await fetchLeaderboard(competition);
+        //     tableBody.innerHTML = ''; // Clear the current leaderboard
+
+        //     // Sort the leaderboard by score in descending order
+        //     leaderboard.sort((a, b) => b.score - a.score);
+
+        //     // Add each entry to the table
+        //     leaderboard.forEach((entry, index) => {
+        //         const row = document.createElement('tr');
+        //         row.innerHTML = `
+        //             <td>${index + 1}</td>
+        //             <td>${entry.name}</td>
+        //             <td>${entry.score}</td>
+        //         `;
+        //         tableBody.appendChild(row);
+        //     });
+        // }
         // Function to update the leaderboard table
         function updateLeaderboard(competition) {
             const tableBody = competition === 'Cemantle' ? document.getElementById('cemantle_leaderboard') : document.getElementById('pedantle_leaderboard');
@@ -182,11 +214,11 @@
                 if (competition === 'Cemantle') {
                     leaderboard_cemantle.push({ name, score }); // Add new entry to the leaderboard
                     updateLeaderboard(competition); // Update the leaderboard table
-                    submitScore(name, score); // Submit the score to the Cloud Function
+                    submitScore(name, score, competition); // Submit the score to the Cloud Function
                 } else if (competition === 'Pedantle') {
                     leaderboard_pedantle.push({ name, score }); // Add new entry to the leaderboard
                     updateLeaderboard(competition); // Update the leaderboard table
-                    submitScore(name, score); // Submit the score to the Cloud Function
+                    submitScore(name, score, competition); // Submit the score to the Cloud Function
                 } else {
                     alert('Please select a valid competition.');
                 }

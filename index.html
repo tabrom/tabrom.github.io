@@ -156,10 +156,15 @@
         const db = getFirestore(app);
 
         async function fetchLeaderboard(competition) {
-            const querySnapshot = await getDocs(collection(db, competition.toLowerCase() + '_leaderboard'));
+            const querySnapshot = await getDocs(collection(db, 'leaderboard'));
             const leaderboard = [];
             querySnapshot.forEach((doc) => {
-                leaderboard.push(doc.data());
+                if (data.competition === competition) {
+                    leaderboard.push({
+                        name: data.name,
+                        score: data.score
+                    });
+                }
             });
             return leaderboard;
         }

@@ -158,7 +158,9 @@
         console.log('Starting fetchLeaderboard');
         try {
             const dbRef = ref(db);
+            console.log('Database reference created');
             const snapshot = await get(child(dbRef, `leaderboard`));
+            console.log('Snapshot received');
             if (snapshot.exists()) {
                 console.log('Snapshot received');
                 const data = snapshot.val();

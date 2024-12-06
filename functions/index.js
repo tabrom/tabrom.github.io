@@ -60,10 +60,15 @@ exports.helloWorld = functions.https.onRequest((req, res) => {
 const corsHandler = cors({ origin: 'https://tabrom.github.io' }); // Allows all domains
 
 exports.addScore = functions.https.onRequest((req, res) => {
-    // Use CORS handler
     corsHandler(req, res, () => {
         if (req.method !== 'POST') {
             return res.status(405).send('Method Not Allowed');
+        }
+
+        // Check the Referer header for additional security
+        const referer = req.get('Referer');
+        if (!referer || !referer.startsWith('https://tabrom.github.io')) {
+            return res.status(403).send('Forbidden: Invalid Referer');
         }
 
         const { name, score } = req.body;

@@ -96,13 +96,13 @@
 
             <!-- Input Form -->
             <div id="submit-score" class="mt-5 d-flex justify-content-center">
-                <div class="col-md-8">
+                <div class="col-md-10">
                     <h3 class="text-center mb-3">Submit Your Score</h3>
                     <form id="scoreForm" class="row g-3">
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <input type="text" id="name" class="form-control" placeholder="Enter your name" required>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <input type="number" id="score" class="form-control" placeholder="Enter your score" required>
                         </div>
                         <div class="col-md-3">
@@ -111,6 +111,10 @@
                                 <option value="Cemantle">Cemantle</option>
                                 <option value="Pedantle">Pedantle</option>
                             </select>
+                        </div>
+                        <div class="col-md-3">
+                            <input type="date" id="finishDate" class="form-control" placeholder="Select finish date">
+                            <label for="finishDate" class="form-label"> Select finish date if not completed today.</label>
                         </div>
                         <div class="col-md-12 text-center">
                             <button type="submit" class="btn btn-primary">Add to Leaderboard</button>
@@ -164,14 +168,10 @@
         const db = getDatabase(app);
         
         async function fetchLeaderboard(competition) {
-            console.log('Starting fetchLeaderboard');
             try {
                 const dbRef = ref(db);
-                console.log('Database reference created');
                 const snapshot = await get(child(dbRef, "leaderboard"));
-                console.log('Snapshot received');
                 if (snapshot.exists()) {
-                    console.log('Snapshot received');
                     const data = snapshot.val();
                     const leaderboard = [];
                     for (const key in data) {
@@ -196,12 +196,8 @@
         }
 
         async function updateLeaderboard(competition, todayOnly = false) {
-            console.log("updating leaderboard for competition ", competition);
             const tableBody = competition === 'Cemantle' ? document.getElementById('cemantle_leaderboard') : document.getElementById('pedantle_leaderboard');
-            console.log('fetching leaderboard');
             const leaderboard = await fetchLeaderboard(competition);
-            console.log('fetching done')
-            console.log(leaderboard);
             tableBody.innerHTML = ''; // Clear the current leaderboard
 
             const filteredLeaderboard = todayOnly ? leaderboard.filter(entry => {
@@ -240,16 +236,14 @@
             const name = document.getElementById('name').value.trim();
             const score = parseInt(document.getElementById('score').value, 10);
             const competition = document.getElementById('competition').value;
+            const date = document.getElementById('finishDate').value;
+            console.log(date);
 
             if (name && !isNaN(score)) {
                 if (competition === 'Cemantle') {
-                    // leaderboard_cemantle.push({ name, score }); // Add new entry to the leaderboard
-                    // updateLeaderboard(competition); // Update the leaderboard table
                     submitScore(name, score, competition); // Submit the score to the Cloud Function
                     updateLeaderboard(competition); // Update the leaderboard table
                 } else if (competition === 'Pedantle') {
-                    // leaderboard_pedantle.push({ name, score }); // Add new entry to the leaderboard
-                    // updateLeaderboard(competition); // Update the leaderboard table
                     submitScore(name, score, competition); // Submit the score to the Cloud Function
                     updateLeaderboard(competition); // Update the leaderboard table
                 } else {

@@ -71,7 +71,7 @@ exports.addScore = functions.https.onRequest((req, res) => {
             return res.status(403).send('Forbidden: Invalid Referer');
         }
 
-        const { name, score } = req.body;
+        const { name, score, competition } = req.body;
 
         // Validate inputs
         if (!name || typeof name !== 'string' || !score || typeof score !== 'number') {
@@ -82,7 +82,7 @@ exports.addScore = functions.https.onRequest((req, res) => {
         const ref = admin.database().ref('leaderboard'); // For Realtime Database
         // const ref = admin.firestore().collection('leaderboard'); // For Firestore
 
-        ref.push({ name, score })
+        ref.push({ name, score , competition})
             .then(() => res.status(200).send('Score submitted successfully'))
             .catch(error => res.status(500).send('Error saving score: ' + error.message));
     });

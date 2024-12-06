@@ -74,7 +74,7 @@ exports.addScore = functions.https.onRequest((req, res) => {
         const { name, score, competition } = req.body;
 
         // Validate inputs
-        if (!name || typeof name !== 'string' || !score || typeof score !== 'number') {
+        if (!name || typeof name !== 'string' || !score || typeof score !== 'number' || !competition || typeof competition !== 'string') {
             return res.status(400).send('Invalid input');
         }
 

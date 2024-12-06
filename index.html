@@ -148,28 +148,43 @@
           .catch(error => console.error('Error:', error));
         }
 
-        const leaderboard_cemantle = [];
-        const leaderboard_pedantle = [];
+        // const leaderboard_cemantle = [];
+        // const leaderboard_pedantle = [];
+        import { getDatabase, ref, set, get, child } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
 
-        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
-
-        const db = getFirestore(app);
-
+        const db = getDatabase(app);
         async function fetchLeaderboard(competition) {
-            const querySnapshot = await getDocs(collection(db, 'leaderboard'));
+            const dbRef = ref(db);
+            const snapshot = await get(child(dbRef, `leaderboard`));
             const leaderboard = [];
-            querySnapshot.forEach((doc) => {
-                const data = doc.data();
-                if (data.competition === competition) {
-                    leaderboard.push({
-                        name: data.name,
-                        score: data.score
-                    });
-                console.log(`${doc.id} => ${doc.data()}`);
-                }
-            });
+            if (snapshot.exists()) {
+                snapshot.forEach((childSnapshot) => {
+                    const data = childSnapshot.val();
+                    if (data.competition === competition) {
+                        leaderboard.push({
+                            name: data.name,
+                            score: data.score
+                        });
+                    }
+                });
+            }
             return leaderboard;
         }
+
+        // function submitScore(name, score, competition) {
+        //     const newScoreRef = ref(db, `leaderboard/${competition}/${name}`);
+        //     set(newScoreRef, {
+        //         name: name,
+        //         score: score
+        //     })
+        //     .then(() => {
+        //         console.log('Score submitted successfully');
+        //     })
+        //     .catch((error) => {
+        //         console.error('Error submitting score:', error);
+        //     });
+        // }
+
 
         async function updateLeaderboard(competition) {
             const tableBody = competition === 'Cemantle' ? document.getElementById('cemantle_leaderboard') : document.getElementById('pedantle_leaderboard');

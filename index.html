@@ -153,25 +153,31 @@
         import { getDatabase, ref, set, get, child } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
 
         const db = getDatabase(app);
-        async function fetchLeaderboard(competition) {
-            const dbRef = ref(db);
-            const snapshot = await get(child(dbRef, `leaderboard`));
-            const leaderboard = [];
-            console.log("snapshot", snapshot);
-            console.log(snapshot.exists());
-            if (snapshot.exists()) {
-                snapshot.forEach((childSnapshot) => {
-                    const data = childSnapshot.val();
-                    if (data.competition === competition) {
-                        leaderboard.push({
-                            name: data.name,
-                            score: data.score
-                        });
-                    }
+        
+async function fetchLeaderboard(competition) {
+    console.log('Starting fetchLeaderboard');
+    try {
+        const querySnapshot = await getDocs(collection(db, 'leaderboard'));
+        console.log('Query snapshot received');
+        const leaderboard = [];
+        querySnapshot.forEach((doc) => {
+            const data = doc.data(); // Get the document data
+            console.log('Document data:', data);
+            if (data.competition === competition) { // Access specific key
+                leaderboard.push({
+                    name: data.name, // Access specific key
+                    score: data.score // Access specific key
                 });
             }
-            return leaderboard;
-        }
+        });
+        console.log('Leaderboard fetched:', leaderboard);
+        return leaderboard;
+    } 
+    catch (error) {
+        console.error('Error fetching leaderboard:', error);
+        return [];
+    }
+}
 
         // function submitScore(name, score, competition) {
         //     const newScoreRef = ref(db, `leaderboard/${competition}/${name}`);

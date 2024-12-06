@@ -71,14 +71,12 @@ exports.addScore = functions.https.onRequest((req, res) => {
             return res.status(403).send('Forbidden: Invalid Referer');
         }
 
-        const { name, score, competition } = req.body;
+        const { name, score, competition, timestamp } = req.body;
 
         // Validate inputs
         if (!name || typeof name !== 'string' || !score || typeof score !== 'number' || !competition || typeof competition !== 'string') {
             return res.status(400).send('Invalid input');
         }
-
-        const timestamp = new Date().toISOString();
 
         // Save to Realtime Database or Firestore
         const ref = admin.database().ref('leaderboard'); // For Realtime Database

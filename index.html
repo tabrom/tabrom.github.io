@@ -150,13 +150,13 @@
         const app = initializeApp(firebaseConfig);
 
 
-        function submitScore(name, score, competition) {
+        function submitScore(name, score, competition, date) {
           fetch('https://us-central1-oii-leaderboard.cloudfunctions.net/addScore', {
               method: 'POST',
               headers: {
                   'Content-Type': 'application/json'
               },
-              body: JSON.stringify({ name, score, competition })
+              body: JSON.stringify({ name, score, competition, date })
           })
           .then(response => response.text())
           .then(data => console.log(data))
@@ -236,15 +236,18 @@
             const name = document.getElementById('name').value.trim();
             const score = parseInt(document.getElementById('score').value, 10);
             const competition = document.getElementById('competition').value;
-            const date = document.getElementById('finishDate').value;
-            console.log(date);
+            const timestamp = document.getElementById('finishDate').value;
+        
+            if (timestamp !== '' || timestamp == null) {
+                const timestamp = new Date().toISOString().split('T')[0];
+            }
 
             if (name && !isNaN(score)) {
                 if (competition === 'Cemantle') {
-                    submitScore(name, score, competition); // Submit the score to the Cloud Function
+                    submitScore(name, score, competition, timestamp); // Submit the score to the Cloud Function
                     updateLeaderboard(competition); // Update the leaderboard table
                 } else if (competition === 'Pedantle') {
-                    submitScore(name, score, competition); // Submit the score to the Cloud Function
+                    submitScore(name, score, competition, timestamp); // Submit the score to the Cloud Function
                     updateLeaderboard(competition); // Update the leaderboard table
                 } else {
                     alert('Please select a valid competition.');

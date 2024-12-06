@@ -194,6 +194,7 @@
             console.log('fetching leaderboard');
             const leaderboard = await fetchLeaderboard(competition);
             console.log('fetching done')
+            console.log(leaderboard);
             tableBody.innerHTML = ''; // Clear the current leaderboard
 
             // Sort the leaderboard by score in descending order

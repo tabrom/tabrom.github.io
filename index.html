@@ -157,6 +157,8 @@
             const dbRef = ref(db);
             const snapshot = await get(child(dbRef, `leaderboard`));
             const leaderboard = [];
+            console.log("snapshot", snapshot);
+            console.log(snapshot.exists());
             if (snapshot.exists()) {
                 snapshot.forEach((childSnapshot) => {
                     const data = childSnapshot.val();

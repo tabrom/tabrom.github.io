@@ -214,13 +214,13 @@
             filteredLeaderboard.sort((a, b) => b.score - a.score);
             // Add each entry to the table
             filteredLeaderboard.forEach((entry, index) => {
-                
+                const entryDate = new Date(entry.date).toISOString().split('T')[0];
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${index + 1}</td>
                     <td>${entry.name}</td>
                     <td>${entry.score}</td>
-                    <td>${date}</td>
+                    <td>${entryDate}</td>
                 `;
                 tableBody.appendChild(row);
                 });

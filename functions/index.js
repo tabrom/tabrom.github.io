@@ -78,11 +78,13 @@ exports.addScore = functions.https.onRequest((req, res) => {
             return res.status(400).send('Invalid input');
         }
 
+        const timestamp = new Date().toISOString();
+
         // Save to Realtime Database or Firestore
         const ref = admin.database().ref('leaderboard'); // For Realtime Database
         // const ref = admin.firestore().collection('leaderboard'); // For Firestore
 
-        ref.push({ name, score , competition})
+        ref.push({ name, score , competition, timestamp})
             .then(() => res.status(200).send('Score submitted successfully'))
             .catch(error => res.status(500).send('Error saving score: ' + error.message));
     });

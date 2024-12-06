@@ -76,6 +76,7 @@
                             <th>#</th>
                             <th>Name</th>
                             <th>#Guesses</th>
+                            <th>Date</th>
                         </tr>
                     </thead>
                     <tbody id="pedantle_leaderboard">
@@ -160,7 +161,7 @@
         try {
             const dbRef = ref(db);
             console.log('Database reference created');
-            const snapshot = await get(child(dbRef, `leaderboard`));
+            const snapshot = await get(child(dbRef, "leaderboard"));
             console.log('Snapshot received');
             if (snapshot.exists()) {
                 console.log('Snapshot received');
@@ -170,7 +171,8 @@
                     if (data[key].competition === competition) {
                         leaderboard.push({
                             name: data[key].name,
-                            score: data[key].score
+                            score: data[key].score,
+                            timestamp:data[key].timestamp 
                         });
                     }
                 }
@@ -185,20 +187,6 @@
             return [];
         }
     }
-        // function submitScore(name, score, competition) {
-        //     const newScoreRef = ref(db, `leaderboard/${competition}/${name}`);
-        //     set(newScoreRef, {
-        //         name: name,
-        //         score: score
-        //     })
-        //     .then(() => {
-        //         console.log('Score submitted successfully');
-        //     })
-        //     .catch((error) => {
-        //         console.error('Error submitting score:', error);
-        //     });
-        // }
-
 
         async function updateLeaderboard(competition) {
             console.log("updating leaderboard for competition ", competition);
@@ -214,11 +202,14 @@
 
             // Add each entry to the table
             leaderboard.forEach((entry, index) => {
+                console.log(entry.timestamp);
+                const date = new Date(entry.timestamp).toISOString().split('T')[0];
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${index + 1}</td>
                     <td>${entry.name}</td>
                     <td>${entry.score}</td>
+                    <td>${date}</td>
                 `;
                 tableBody.appendChild(row);
             });

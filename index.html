@@ -165,6 +165,7 @@
                         name: data.name,
                         score: data.score
                     });
+                console.log(`${doc.id} => ${doc.data()}`);
                 }
             });
             return leaderboard;

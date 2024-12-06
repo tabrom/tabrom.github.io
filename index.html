@@ -125,6 +125,11 @@
         </div>
     </div>
 
+    <!-- Disclaimer Section -->
+    <footer class="mt-5 text-center">
+        <p>Disclaimer: The scores and data presented on this leaderboard are for informational purposes only. The accuracy of the data is not guaranteed.</p>
+    </footer>
+
     <!-- Bootstrap JS -->
     <script src="js/bootstrap.bundle.min.js"></script>
     <!-- Firebase SDK -->
@@ -150,13 +155,13 @@
         const app = initializeApp(firebaseConfig);
 
 
-        function submitScore(name, score, competition, date) {
+        function submitScore(name, score, competition, timestamp) {
           fetch('https://us-central1-oii-leaderboard.cloudfunctions.net/addScore', {
               method: 'POST',
               headers: {
                   'Content-Type': 'application/json'
               },
-              body: JSON.stringify({ name, score, competition, date })
+              body: JSON.stringify({ name, score, competition, timestamp })
           })
           .then(response => response.text())
           .then(data => console.log(data))

@@ -46,6 +46,8 @@
 
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
+const cors = require('cors');
+
 admin.initializeApp();
 
 // functions.setGlobalOptions({ region: 'us-central1', runtime: 'nodejs18' });
@@ -54,24 +56,29 @@ exports.helloWorld = functions.https.onRequest((req, res) => {
     res.send("Hello, World!");
 });
 
+// Use CORS middleware
+const corsHandler = cors({ origin: 'https://tabrom.github.io' }); // Allows all domains
 
-// Cloud Function to handle leaderboard updates
 exports.addScore = functions.https.onRequest((req, res) => {
-    const referer = req.headers.referer || '';
-    
-    // Allow requests only from your GitHub Pages domain
-    if (referer.startsWith('https://tabrom.github.io')) {
+    // Use CORS handler
+    corsHandler(req, res, () => {
+        if (req.method !== 'POST') {
+            return res.status(405).send('Method Not Allowed');
+        }
+
         const { name, score } = req.body;
 
-        // Validate input data
-        if (typeof name === 'string' && typeof score === 'number') {
-            admin.database().ref('leaderboard').push({ name, score })
-                .then(() => res.status(200).send('Score added successfully'))
-                .catch(error => res.status(500).send(error.message));
-        } else {
-            res.status(400).send('Invalid input');
+        // Validate inputs
+        if (!name || typeof name !== 'string' || !score || typeof score !== 'number') {
+            return res.status(400).send('Invalid input');
         }
-    } else {
-        res.status(403).send('Unauthorized');
-    }
+
+        // Save to Realtime Database or Firestore
+        const ref = admin.database().ref('leaderboard'); // For Realtime Database
+        // const ref = admin.firestore().collection('leaderboard'); // For Firestore
+
+        ref.push({ name, score })
+            .then(() => res.status(200).send('Score submitted successfully'))
+            .catch(error => res.status(500).send('Error saving score: ' + error.message));
+    });
 });

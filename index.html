@@ -154,31 +154,34 @@
 
         const db = getDatabase(app);
         
-async function fetchLeaderboard(competition) {
-    console.log('Starting fetchLeaderboard');
-    try {
-        const querySnapshot = await getDocs(collection(db, 'leaderboard'));
-        console.log('Query snapshot received');
-        const leaderboard = [];
-        querySnapshot.forEach((doc) => {
-            const data = doc.data(); // Get the document data
-            console.log('Document data:', data);
-            if (data.competition === competition) { // Access specific key
-                leaderboard.push({
-                    name: data.name, // Access specific key
-                    score: data.score // Access specific key
-                });
+    async function fetchLeaderboard(competition) {
+        console.log('Starting fetchLeaderboard');
+        try {
+            const dbRef = ref(db);
+            const snapshot = await get(child(dbRef, `leaderboard`));
+            if (snapshot.exists()) {
+                console.log('Snapshot received');
+                const data = snapshot.val();
+                const leaderboard = [];
+                for (const key in data) {
+                    if (data[key].competition === competition) {
+                        leaderboard.push({
+                            name: data[key].name,
+                            score: data[key].score
+                        });
+                    }
+                }
+                console.log('Leaderboard fetched:', leaderboard);
+                return leaderboard;
+            } else {
+                console.log('No data available');
+                return [];
             }
-        });
-        console.log('Leaderboard fetched:', leaderboard);
-        return leaderboard;
-    } 
-    catch (error) {
-        console.error('Error fetching leaderboard:', error);
-        return [];
+        } catch (error) {
+            console.error('Error fetching leaderboard:', error);
+            return [];
+        }
     }
-}
-
         // function submitScore(name, score, competition) {
         //     const newScoreRef = ref(db, `leaderboard/${competition}/${name}`);
         //     set(newScoreRef, {

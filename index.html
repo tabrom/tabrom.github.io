@@ -102,56 +102,26 @@
             <div class="form-group mt-3">
                 <input type="date" id="specificDate" class="form-control" disabled>
             </div>
-            <!-- <script>
-                document.getElementById('specificDateOnly').addEventListener('change', function () {
-                    const specificDateInput = document.getElementById('specificDate');
-                    specificDateInput.disabled = !this.checked;
-                    const specificDate = specificDateInput.value;
-                    const todayOnly = document.getElementById('todayOnly').checked;
-                    updateLeaderboard('Cemantle', todayOnly, specificDate);
-                    updateLeaderboard('Pedantle', todayOnly, specificDate);
-                });
 
-                document.getElementById('specificDate').addEventListener('change', function () {
-                    const specificDate = this.value;
-                    const todayOnly = document.getElementById('todayOnly').checked;
-                    updateLeaderboard('Cemantle', todayOnly, specificDate);
-                    updateLeaderboard('Pedantle', todayOnly, specificDate);
-                });
-
-                async function updateLeaderboard(competition, todayOnly = false, specificDate = null) {
-                    const tableBody = competition === 'Cemantle' ? document.getElementById('cemantle_leaderboard') : document.getElementById('pedantle_leaderboard');
-                    const leaderboard = await fetchLeaderboard(competition);
-                    tableBody.innerHTML = ''; // Clear the current leaderboard
-
-                    const filteredLeaderboard = leaderboard.filter(entry => {
-                        const entryDate = entry.timestamp;
-                        if (specificDate) {
-                            return entryDate === specificDate;
-                        }
-                        if (todayOnly) {
-                            const today = new Date().toISOString().split('T')[0];
-                            return today === entryDate;
-                        }
-                        return true;
-                    });
-
-                    // Sort the leaderboard by score in descending order
-                    filteredLeaderboard.sort((a, b) => b.score - a.score);
-                    // Add each entry to the table
-                    filteredLeaderboard.forEach((entry, index) => {
-                        const row = document.createElement('tr');
-                        row.innerHTML = `
-                            <td>${index + 1}</td>
-                            <td>${entry.name}</td>
-                            <td>${entry.score}</td>
-                            <td>${entry.timestamp}</td>
-                        `;
-                        tableBody.appendChild(row);
-                    });
-                }
-            </script> -->
-
+            <!-- Average Scores Table -->
+            <div id="average-scores" class="mt-5">
+                <h3>Average Scores and Submissions</h3>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Name</th>
+                            <th>Avg Pedantle Score</th>
+                            <th>Avg Cemantle Score</th>
+                            <th>Submissions Pedantle</th>
+                            <th>Submissions Cemantle</th>
+                        </tr>
+                    </thead>
+                    <tbody id="average_scores_table">
+                        <!-- Entries will be dynamically added here -->
+                    </tbody>
+                </table>
+            </div>
 
             <!-- Input Form -->
             <div id="submit-score" class="mt-5 d-flex justify-content-center">
@@ -360,6 +330,68 @@
                 alert('Please enter a valid name and score.');
             }
         });
+    
+        
+        async function updateAverageScores() {
+            const cemantleLeaderboard = await fetchLeaderboard('Cemantle');
+            const pedantleLeaderboard = await fetchLeaderboard('Pedantle');
+
+            const userStats = {};
+
+            // Process Cemantle leaderboard
+            cemantleLeaderboard.forEach(entry => {
+                if (!userStats[entry.name]) {
+                    userStats[entry.name] = { cemantle: [], pedantle: [] };
+                }
+                userStats[entry.name].cemantle.push(entry.score);
+            });
+
+            // Process Pedantle leaderboard
+            pedantleLeaderboard.forEach(entry => {
+                if (!userStats[entry.name]) {
+                    userStats[entry.name] = { cemantle: [], pedantle: [] };
+                }
+                userStats[entry.name].pedantle.push(entry.score);
+            });
+
+            // Calculate averages and counts
+            const averageScores = Object.keys(userStats).map(name => {
+                const cemantleScores = userStats[name].cemantle;
+                const pedantleScores = userStats[name].pedantle;
+                const avgCemantleScore = cemantleScores.length ? (cemantleScores.reduce((a, b) => a + b, 0) / cemantleScores.length).toFixed(2) : 0;
+                const avgPedantleScore = pedantleScores.length ? (pedantleScores.reduce((a, b) => a + b, 0) / pedantleScores.length).toFixed(2) : 0;
+                return {
+                    name,
+                    avgCemantleScore,
+                    avgPedantleScore,
+                    submissionsCemantle: cemantleScores.length,
+                    submissionsPedantle: pedantleScores.length
+                };
+            });
+
+            // Sort by average Cemantle score
+            averageScores.sort((a, b) => b.avgCemantleScore - a.avgCemantleScore);
+
+            // Render the table
+            const tableBody = document.getElementById('average_scores_table');
+            tableBody.innerHTML = ''; // Clear the current table
+
+            averageScores.forEach((entry, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${entry.name}</td>
+                    <td>${entry.avgPedantleScore}</td>
+                    <td>${entry.avgCemantleScore}</td>
+                    <td>${entry.submissionsPedantle}</td>
+                    <td>${entry.submissionsCemantle}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Call updateAverageScores to populate the table
+updateAverageScores();
     </script>
 </body>
 </html>

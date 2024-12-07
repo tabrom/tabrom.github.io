@@ -19,7 +19,8 @@ const app = initializeApp(firebaseConfig);
 
 import { getDatabase, ref, get, child } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
 
-export const db = getDatabase(app);
+const db = getDatabase(app);
+export { db };
 
 
 export function submitScore(name, score, competition, timestamp) {

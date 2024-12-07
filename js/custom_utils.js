@@ -113,11 +113,11 @@ export function sortTable(column, currentSortOrder, currentSortColumn) {
         currentSortColumn = column;
         currentSortOrder = 'asc';
     }
-    updateAverageScores();
-    updateSortArrows();
+    updateAverageScores(currentSortOrder, currentSortColumn);
+    updateSortArrows(currentSortOrder, currentSortColumn);
 }
 
-function updateSortArrows() {
+function updateSortArrows(currentSortOrder, currentSortColumn) {
     const headers = document.querySelectorAll('th');
     headers.forEach(header => {
         const arrow = header.querySelector('.sort-arrow');
@@ -132,7 +132,7 @@ function updateSortArrows() {
     });
 }
 
-export async function updateAverageScores() {
+export async function updateAverageScores(currentSortOrder, currentSortColumn) {
     const cemantleLeaderboard = await fetchLeaderboard('Cemantle');
     const pedantleLeaderboard = await fetchLeaderboard('Pedantle');
 

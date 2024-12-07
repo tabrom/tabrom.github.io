@@ -322,12 +322,14 @@
                     }).catch(error => {
                         console.error('Error updating leaderboard:', error);
                     });;
+                    updateAverageScores(); // Update the average scores table
                 } else if (competition === 'Pedantle') {
                     submitScore(name, score, competition, timestamp).then(() => {
                         updateLeaderboard(competition, todayOnly); // Update the leaderboard table
                     }).catch(error => {
                         console.error('Error updating leaderboard:', error);
                     });;
+                    updateAverageScores(); // Update the average scores table
                 } else {
                     alert('Please select a valid competition.');
                 }

@@ -1,8 +1,13 @@
+body {
+    border: 5px solid red; /* Test style to verify CSS is applied */
+}
+
 .sort-arrow {
     display: inline-block;
     width: 10px;
     height: 10px;
     margin-left: 5px;
+    margin-bottom: 20px;
     vertical-align: middle;
 }
 

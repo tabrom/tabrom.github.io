@@ -109,15 +109,16 @@
             <!-- Average Scores Table -->
             <div id="average-scores" class="mt-5">
                 <h3>Average Scores and Submissions</h3>
+                <p>Click on the column headers to sort the table.</p>
                 <table class="table table-striped">
                     <thead>
                         <tr>
                             <th id="rank-header">Rank <span class="sort-arrow"></span></th>
                             <th id="name-header">Name <span class="sort-arrow"></span></th>
-                            <th id="avg-pedantle-header">Avg Pedantle Score <span class="sort-arrow"></span></th>
-                            <th id="avg-cemantle-header">Avg Cemantle Score <span class="sort-arrow"></span></th>
-                            <th id="submissions-pedantle-header">Submissions Pedantle <span class="sort-arrow"></span></th>
-                            <th id="submissions-cemantle-header">Submissions Cemantle <span class="sort-arrow"></span></th>
+                            <th id="avgPedantle-header">Avg Pedantle Score <span class="sort-arrow"></span></th>
+                            <th id="avgCemantle-header">Avg Cemantle Score <span class="sort-arrow"></span></th>
+                            <th id="submissionsPedantle-header">Submissions Pedantle <span class="sort-arrow"></span></th>
+                            <th id="submissionsCemantle-header">Submissions Cemantle <span class="sort-arrow"></span></th>
                         </tr>
                     </thead>
                     <tbody id="average_scores_table">
@@ -339,10 +340,10 @@
 
         document.getElementById('rank-header').addEventListener('click', () => sortTable('rank'));
         document.getElementById('name-header').addEventListener('click', () => sortTable('name'));
-        document.getElementById('avg-pedantle-header').addEventListener('click', () => sortTable('avgPedantleScore'));
-        document.getElementById('avg-cemantle-header').addEventListener('click', () => sortTable('avgCemantleScore'));
-        document.getElementById('submissions-pedantle-header').addEventListener('click', () => sortTable('submissionsPedantle'));
-        document.getElementById('submissions-cemantle-header').addEventListener('click', () => sortTable('submissionsCemantle'));
+        document.getElementById('avgPedantle-header').addEventListener('click', () => sortTable('avgPedantle'));
+        document.getElementById('avgCemantle-header').addEventListener('click', () => sortTable('avgCemantle'));
+        document.getElementById('submissionsPedantle-header').addEventListener('click', () => sortTable('submissionsPedantle'));
+        document.getElementById('submissionsCemantle-header').addEventListener('click', () => sortTable('submissionsCemantle'));
 
         function sortTable(column) {
             if (currentSortColumn === column) {
@@ -359,6 +360,9 @@
             const headers = document.querySelectorAll('th');
             headers.forEach(header => {
                 const arrow = header.querySelector('.sort-arrow');
+                // console.log(header.id);
+                console.log(currentSortColumn);
+                console.log(arrow);
                 if (arrow) {
                     if (header.id.includes(currentSortColumn)) {
                         arrow.classList.remove('asc', 'desc');
@@ -396,12 +400,12 @@
             const averageScores = Object.keys(userStats).map(name => {
                 const cemantleScores = userStats[name].cemantle;
                 const pedantleScores = userStats[name].pedantle;
-                const avgCemantleScore = cemantleScores.length ? (cemantleScores.reduce((a, b) => a + b, 0) / cemantleScores.length).toFixed(2) : 0;
-                const avgPedantleScore = pedantleScores.length ? (pedantleScores.reduce((a, b) => a + b, 0) / pedantleScores.length).toFixed(2) : 0;
+                const avgCemantle = cemantleScores.length ? (cemantleScores.reduce((a, b) => a + b, 0) / cemantleScores.length).toFixed(2) : 0;
+                const avgPedantle = pedantleScores.length ? (pedantleScores.reduce((a, b) => a + b, 0) / pedantleScores.length).toFixed(2) : 0;
                 return {
                     name,
-                    avgCemantleScore,
-                    avgPedantleScore,
+                    avgCemantle,
+                    avgPedantle,
                     submissionsCemantle: cemantleScores.length,
                     submissionsPedantle: pedantleScores.length
                 };
@@ -425,8 +429,8 @@
                 row.innerHTML = `
                     <td>${index + 1}</td>
                     <td>${entry.name}</td>
-                    <td>${entry.avgPedantleScore}</td>
-                    <td>${entry.avgCemantleScore}</td>
+                    <td>${entry.avgPedantle}</td>
+                    <td>${entry.avgCemantle}</td>
                     <td>${entry.submissionsPedantle}</td>
                     <td>${entry.submissionsCemantle}</td>
                 `;

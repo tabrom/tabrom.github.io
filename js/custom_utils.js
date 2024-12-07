@@ -24,28 +24,20 @@ export function submitScore(name, score, competition, timestamp) {
   }
 
 
-async function fetchLeaderboard(competition) {
+export async function fetchLeaderboard(competition) {
     try {
-        const dbRef = ref(db);
-        const snapshot = await get(child(dbRef, "leaderboard"));
-        if (snapshot.exists()) {
-            const data = snapshot.val();
-            const leaderboard = [];
-            for (const key in data) {
-                if (data[key].competition === competition) {
-                    leaderboard.push({
-                        name: data[key].name,
-                        score: data[key].score,
-                        timestamp:data[key].timestamp 
-                    });
-                }
+        const response = await fetch(`https://us-central1-oii-leaderboard.cloudfunctions.net/getLeaderboard?competition=${competition}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
             }
-            console.log('Leaderboard fetched:', leaderboard);
-            return leaderboard;
-        } else {
-            console.log('No data available');
-            return [];
+        });
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
         }
+        const leaderboard = await response.json();
+        console.log('Leaderboard fetched:', leaderboard);
+        return leaderboard;
     } catch (error) {
         console.error('Error fetching leaderboard:', error);
         return [];
@@ -175,4 +167,3 @@ export async function updateAverageScores(currentSortOrder, currentSortColumn) {
         tableBody.appendChild(row);
     });
 }
-

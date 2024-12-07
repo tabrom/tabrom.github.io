@@ -321,7 +321,7 @@
 
         document.getElementById('todayOnly').addEventListener('change', function () {
             const todayOnly = this.checked;
-            document.getElementById('specificDate').checked = false;
+            document.getElementById('specificDateOnly').checked = false;
             updateLeaderboard('Cemantle', todayOnly);
             updateLeaderboard('Pedantle', todayOnly);
         });

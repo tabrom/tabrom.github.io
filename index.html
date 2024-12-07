@@ -257,12 +257,12 @@
         let currentSortColumn = null;
         let currentSortOrder = 'asc';
 
-        document.getElementById('rank-header').addEventListener('click', () => sortTable('rank'));
-        document.getElementById('name-header').addEventListener('click', () => sortTable('name'));
-        document.getElementById('avgPedantle-header').addEventListener('click', () => sortTable('avgPedantle'));
-        document.getElementById('avgCemantle-header').addEventListener('click', () => sortTable('avgCemantle'));
-        document.getElementById('submissionsPedantle-header').addEventListener('click', () => sortTable('submissionsPedantle'));
-        document.getElementById('submissionsCemantle-header').addEventListener('click', () => sortTable('submissionsCemantle'));
+        document.getElementById('rank-header').addEventListener('click', () => sortTable('rank', currentSortOrder, currentSortColumn));
+        document.getElementById('name-header').addEventListener('click', () => sortTable('name', currentSortOrder, currentSortColumn));
+        document.getElementById('avgPedantle-header').addEventListener('click', () => sortTable('avgPedantle', currentSortOrder, currentSortColumn));
+        document.getElementById('avgCemantle-header').addEventListener('click', () => sortTable('avgCemantle', currentSortOrder, currentSortColumn));
+        document.getElementById('submissionsPedantle-header').addEventListener('click', () => sortTable('submissionsPedantle', currentSortOrder, currentSortColumn));
+        document.getElementById('submissionsCemantle-header').addEventListener('click', () => sortTable('submissionsCemantle', currentSortOrder, currentSortColumn));
 
         
         // Call updateAverageScores to populate the table initially

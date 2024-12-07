@@ -106,7 +106,7 @@ export async function updateLeaderboard(competition, todayOnly = false, specific
     });
 }
 
-export function sortTable(column) {
+export function sortTable(column, currentSortOrder, currentSortColumn) {
     if (currentSortColumn === column) {
         currentSortOrder = currentSortOrder === 'asc' ? 'desc' : 'asc';
     } else {

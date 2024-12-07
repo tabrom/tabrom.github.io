@@ -272,16 +272,17 @@
             const specificDateInput = document.getElementById('specificDate');
             specificDateInput.disabled = !this.checked;
             const specificDate = specificDateInput.value;
-            const todayOnly = document.getElementById('todayOnly').checked;
-            updateLeaderboard('Cemantle', todayOnly, specificDate);
-            updateLeaderboard('Pedantle', todayOnly, specificDate);
+            // const todayOnly = document.getElementById('todayOnly').checked;
+            document.getElementById('todayOnly').checked = false;
+            updateLeaderboard('Cemantle', false, specificDate);
+            updateLeaderboard('Pedantle', false, specificDate);
         });
 
         document.getElementById('specificDate').addEventListener('change', function () {
             const specificDate = this.value;
-            const todayOnly = document.getElementById('todayOnly').checked;
-            updateLeaderboard('Cemantle', todayOnly, specificDate);
-            updateLeaderboard('Pedantle', todayOnly, specificDate);
+            document.getElementById('todayOnly').checked = false;
+            updateLeaderboard('Cemantle', false, specificDate);
+            updateLeaderboard('Pedantle', false, specificDate);
         });
 
         async function updateLeaderboard(competition, todayOnly = false, specificDate = null) {

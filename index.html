@@ -127,6 +127,7 @@
 
     <!-- Disclaimer Section -->
     <footer class="mt-5 text-center">
+        <hr>
         <p>Disclaimer: The scores and data presented on this leaderboard are for informational purposes only. The accuracy of the data is not guaranteed.</p>
     </footer>
 
@@ -207,7 +208,7 @@
 
             const filteredLeaderboard = todayOnly ? leaderboard.filter(entry => {
                 const today = new Date().toISOString().split('T')[0];
-                const entryDate = new Date(entry.timestamp).toISOString().split('T')[0];
+                const entryDate = entry.timestamp;
                 return today === entryDate;
             }) : leaderboard;
 
@@ -215,13 +216,13 @@
             filteredLeaderboard.sort((a, b) => b.score - a.score);
             // Add each entry to the table
             filteredLeaderboard.forEach((entry, index) => {
-                const entryDate = new Date(entry.timestamp).toISOString().split('T')[0];
+                // const entryDate = new Date(entry.timestamp).toISOString().split('T')[0];
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${index + 1}</td>
                     <td>${entry.name}</td>
                     <td>${entry.score}</td>
-                    <td>${entryDate}</td>
+                    <td>${entry.timestamp}</td>
                 `;
                 tableBody.appendChild(row);
                 });
@@ -244,7 +245,7 @@
             const timestamp = document.getElementById('finishDate').value;
             console.log(timestamp);
             if (timestamp == '' || timestamp == null) {
-                const timestamp = new Date().toISOString().split('T')[0];
+                const timestamp = new Date().toISOString().split('T')[0]; //today's date
             }
             console.log(timestamp);
             if (name && !isNaN(score)) {

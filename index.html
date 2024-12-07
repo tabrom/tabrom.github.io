@@ -110,12 +110,12 @@
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th>Rank</th>
-                            <th>Name</th>
-                            <th>Avg Pedantle Score</th>
-                            <th>Avg Cemantle Score</th>
-                            <th>Submissions Pedantle</th>
-                            <th>Submissions Cemantle</th>
+                            <th id="rank-header">Rank</th>
+                            <th id="name-header">Name</th>
+                            <th id="avg-pedantle-header">Avg Pedantle Score</th>
+                            <th id="avg-cemantle-header">Avg Cemantle Score</th>
+                            <th id="submissions-pedantle-header">Submissions Pedantle</th>
+                            <th id="submissions-cemantle-header">Submissions Cemantle</th>
                         </tr>
                     </thead>
                     <tbody id="average_scores_table">
@@ -332,7 +332,26 @@
             }
         });
     
-        
+        let currentSortColumn = null;
+        let currentSortOrder = 'asc';
+
+        document.getElementById('rank-header').addEventListener('click', () => sortTable('rank'));
+        document.getElementById('name-header').addEventListener('click', () => sortTable('name'));
+        document.getElementById('avg-pedantle-header').addEventListener('click', () => sortTable('avgPedantleScore'));
+        document.getElementById('avg-cemantle-header').addEventListener('click', () => sortTable('avgCemantleScore'));
+        document.getElementById('submissions-pedantle-header').addEventListener('click', () => sortTable('submissionsPedantle'));
+        document.getElementById('submissions-cemantle-header').addEventListener('click', () => sortTable('submissionsCemantle'));
+
+        function sortTable(column) {
+            if (currentSortColumn === column) {
+                currentSortOrder = currentSortOrder === 'asc' ? 'desc' : 'asc';
+            } else {
+                currentSortColumn = column;
+                currentSortOrder = 'asc';
+            }
+            updateAverageScores();
+        }
+
         async function updateAverageScores() {
             const cemantleLeaderboard = await fetchLeaderboard('Cemantle');
             const pedantleLeaderboard = await fetchLeaderboard('Pedantle');
@@ -370,8 +389,14 @@
                 };
             });
 
-            // Sort by average Cemantle score
-            averageScores.sort((a, b) => b.avgCemantleScore - a.avgCemantleScore);
+            // Sort the averageScores array based on the currentSortColumn and currentSortOrder
+            averageScores.sort((a, b) => {
+                if (currentSortOrder === 'asc') {
+                    return a[currentSortColumn] > b[currentSortColumn] ? 1 : -1;
+                } else {
+                    return a[currentSortColumn] < b[currentSortColumn] ? 1 : -1;
+                }
+            });
 
             // Render the table
             const tableBody = document.getElementById('average_scores_table');
@@ -391,8 +416,8 @@
             });
         }
 
-        // Call updateAverageScores to populate the table
-updateAverageScores();
+        // Call updateAverageScores to populate the table initially
+        updateAverageScores();
     </script>
 </body>
 </html>

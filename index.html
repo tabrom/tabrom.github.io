@@ -55,7 +55,7 @@
 
             <!-- Cemantle Leaderboard Table -->
             <div id="cemantle" class="mt-4">
-                <h3>Cemantle Leaderboard</h3>
+                <h3>Cemantle Leaderboard - Top 10 Daily Entries</h3>
                 <table class="table table-striped">
                     <thead>
                         <tr>
@@ -73,7 +73,7 @@
 
             <!-- Pedantle Leaderboard Table -->
             <div id="pedantle" class="mt-5">
-                <h3>Pedantle Leaderboard</h3>
+                <h3>Pedantle Leaderboard - Top 10 Daily Entries</h3>
                 <table class="table table-striped">
                     <thead>
                         <tr>
@@ -280,6 +280,7 @@
             filteredLeaderboard.sort((a, b) => b.score - a.score).reverse();
             // Add each entry to the table
             filteredLeaderboard.forEach((entry, index) => {
+                if (index >= 10) return; // Only show the top 10 entries
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${index + 1}</td>
@@ -288,6 +289,8 @@
                     <td>${entry.timestamp}</td>
                 `;
                 tableBody.appendChild(row);
+                console.log(index)
+                
             });
         }
         updateLeaderboard('Cemantle');

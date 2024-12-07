@@ -1,5 +1,5 @@
 import { ref, get, child } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
-import db from './js/firebase-init.js'
+import db from './firebase-init.js'
 
 
 export function submitScore(name, score, competition, timestamp) {

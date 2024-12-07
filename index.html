@@ -165,8 +165,15 @@
               body: JSON.stringify({ name, score, competition, timestamp })
           })
           .then(response => response.text())
-          .then(data => console.log(data))
-          .catch(error => console.error('Error:', error));
+          .then(data => {
+            console.log(data);
+            return data;
+        }
+        )
+          .catch(error => {
+            console.error('Error:', error)
+            throw error;
+        });
         }
 
         import { getDatabase, ref, set, get, child } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";

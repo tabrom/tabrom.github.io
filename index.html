@@ -322,6 +322,7 @@
         document.getElementById('todayOnly').addEventListener('change', function () {
             const todayOnly = this.checked;
             document.getElementById('specificDateOnly').checked = false;
+            specificDateInput.disabled = this.checked;
             updateLeaderboard('Cemantle', todayOnly);
             updateLeaderboard('Pedantle', todayOnly);
         });

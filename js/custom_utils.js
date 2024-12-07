@@ -94,6 +94,7 @@ export function sortTable(column, currentSortOrder, currentSortColumn) {
     }
     updateAverageScores(currentSortOrder, currentSortColumn);
     updateSortArrows(currentSortOrder, currentSortColumn);
+    return { currentSortOrder, currentSortColumn };
 }
 
 function updateSortArrows(currentSortOrder, currentSortColumn) {

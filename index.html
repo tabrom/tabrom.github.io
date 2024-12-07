@@ -242,12 +242,10 @@
             const name = document.getElementById('name').value.trim();
             const score = parseInt(document.getElementById('score').value, 10);
             const competition = document.getElementById('competition').value;
-            const timestamp = document.getElementById('finishDate').value;
-            console.log(timestamp);
-            if (timestamp == '' || timestamp == null) {
-                const timestamp = new Date().toISOString().split('T')[0]; //today's date
+            var timestamp = document.getElementById('finishDate').value;
+            if (timestamp == '' || timestamp == null) { 
+                timestamp = new Date().toISOString().split('T')[0]; //today's date
             }
-            console.log(timestamp);
             if (name && !isNaN(score)) {
                 if (competition === 'Cemantle') {
                     submitScore(name, score, competition, timestamp); // Submit the score to the Cloud Function

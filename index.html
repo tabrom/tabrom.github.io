@@ -277,7 +277,7 @@
             });
 
             // Sort the leaderboard by score in descending order
-            filteredLeaderboard.sort((a, b) => b.score - a.score);
+            filteredLeaderboard.sort((a, b) => b.score - a.score).reverse();
             // Add each entry to the table
             filteredLeaderboard.forEach((entry, index) => {
                 const row = document.createElement('tr');

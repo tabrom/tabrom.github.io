@@ -1,0 +1,15 @@
+.sort-arrow {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    margin-left: 5px;
+    vertical-align: middle;
+}
+
+.sort-arrow.asc::after {
+    content: '▲';
+}
+
+.sort-arrow.desc::after {
+    content: '▼';
+}

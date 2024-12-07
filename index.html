@@ -38,6 +38,8 @@
     </style>
     <!-- Bootstrap CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="css/custom.css" rel="stylesheet">
 </head>
 <body>
     <div class="sidebar">
@@ -110,12 +112,12 @@
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th id="rank-header">Rank</th>
-                            <th id="name-header">Name</th>
-                            <th id="avg-pedantle-header">Avg Pedantle Score</th>
-                            <th id="avg-cemantle-header">Avg Cemantle Score</th>
-                            <th id="submissions-pedantle-header">Submissions Pedantle</th>
-                            <th id="submissions-cemantle-header">Submissions Cemantle</th>
+                            <th id="rank-header">Rank <span class="sort-arrow"></span></th>
+                            <th id="name-header">Name <span class="sort-arrow"></span></th>
+                            <th id="avg-pedantle-header">Avg Pedantle Score <span class="sort-arrow"></span></th>
+                            <th id="avg-cemantle-header">Avg Cemantle Score <span class="sort-arrow"></span></th>
+                            <th id="submissions-pedantle-header">Submissions Pedantle <span class="sort-arrow"></span></th>
+                            <th id="submissions-cemantle-header">Submissions Cemantle <span class="sort-arrow"></span></th>
                         </tr>
                     </thead>
                     <tbody id="average_scores_table">
@@ -350,6 +352,22 @@
                 currentSortOrder = 'asc';
             }
             updateAverageScores();
+            updateSortArrows();
+        }
+
+        function updateSortArrows() {
+            const headers = document.querySelectorAll('th');
+            headers.forEach(header => {
+                const arrow = header.querySelector('.sort-arrow');
+                if (arrow) {
+                    if (header.id.includes(currentSortColumn)) {
+                        arrow.classList.remove('asc', 'desc');
+                        arrow.classList.add(currentSortOrder);
+                    } else {
+                        arrow.classList.remove('asc', 'desc');
+                    }
+                }
+            });
         }
 
         async function updateAverageScores() {

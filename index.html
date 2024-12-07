@@ -102,7 +102,7 @@
             <div class="form-group mt-3">
                 <input type="date" id="specificDate" class="form-control" disabled>
             </div>
-            <script>
+            <!-- <script>
                 document.getElementById('specificDateOnly').addEventListener('change', function () {
                     const specificDateInput = document.getElementById('specificDate');
                     specificDateInput.disabled = !this.checked;
@@ -150,7 +150,7 @@
                         tableBody.appendChild(row);
                     });
                 }
-            </script>
+            </script> -->
 
 
             <!-- Input Form -->
@@ -235,7 +235,7 @@
           });
           });
         }
-        
+
         import { getDatabase, ref, set, get, child } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
 
         const db = getDatabase(app);
@@ -268,22 +268,43 @@
             }
         }
 
-        async function updateLeaderboard(competition, todayOnly = false) {
+        document.getElementById('specificDateOnly').addEventListener('change', function () {
+            const specificDateInput = document.getElementById('specificDate');
+            specificDateInput.disabled = !this.checked;
+            const specificDate = specificDateInput.value;
+            const todayOnly = document.getElementById('todayOnly').checked;
+            updateLeaderboard('Cemantle', todayOnly, specificDate);
+            updateLeaderboard('Pedantle', todayOnly, specificDate);
+        });
+
+        document.getElementById('specificDate').addEventListener('change', function () {
+            const specificDate = this.value;
+            const todayOnly = document.getElementById('todayOnly').checked;
+            updateLeaderboard('Cemantle', todayOnly, specificDate);
+            updateLeaderboard('Pedantle', todayOnly, specificDate);
+        });
+
+        async function updateLeaderboard(competition, todayOnly = false, specificDate = null) {
             const tableBody = competition === 'Cemantle' ? document.getElementById('cemantle_leaderboard') : document.getElementById('pedantle_leaderboard');
             const leaderboard = await fetchLeaderboard(competition);
             tableBody.innerHTML = ''; // Clear the current leaderboard
 
-            const filteredLeaderboard = todayOnly ? leaderboard.filter(entry => {
-                const today = new Date().toISOString().split('T')[0];
+            const filteredLeaderboard = leaderboard.filter(entry => {
                 const entryDate = entry.timestamp;
-                return today === entryDate;
-            }) : leaderboard;
+                if (specificDate) {
+                    return entryDate === specificDate;
+                }
+                if (todayOnly) {
+                    const today = new Date().toISOString().split('T')[0];
+                    return today === entryDate;
+                }
+                return true;
+            });
 
             // Sort the leaderboard by score in descending order
             filteredLeaderboard.sort((a, b) => b.score - a.score);
             // Add each entry to the table
             filteredLeaderboard.forEach((entry, index) => {
-                // const entryDate = new Date(entry.timestamp).toISOString().split('T')[0];
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${index + 1}</td>
@@ -292,7 +313,7 @@
                     <td>${entry.timestamp}</td>
                 `;
                 tableBody.appendChild(row);
-                });
+            });
         }
         updateLeaderboard('Cemantle');
         updateLeaderboard('Pedantle');

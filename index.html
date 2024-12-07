@@ -248,11 +248,13 @@
             }
             if (name && !isNaN(score)) {
                 if (competition === 'Cemantle') {
-                    submitScore(name, score, competition, timestamp); // Submit the score to the Cloud Function
-                    updateLeaderboard(competition); // Update the leaderboard table
+                    submitScore(name, score, competition, timestamp).then(() => {
+                        updateLeaderboard(competition); // Update the leaderboard table
+                    });
                 } else if (competition === 'Pedantle') {
-                    submitScore(name, score, competition, timestamp); // Submit the score to the Cloud Function
-                    updateLeaderboard(competition); // Update the leaderboard table
+                    submitScore(name, score, competition, timestamp).then(() => {
+                        updateLeaderboard(competition); // Update the leaderboard table
+                    });
                 } else {
                     alert('Please select a valid competition.');
                 }

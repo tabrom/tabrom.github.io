@@ -1,7 +1,3 @@
-body {
-    border: 5px solid red; /* Test style to verify CSS is applied */
-}
-
 .sort-arrow {
     display: inline-block;
     width: 10px;

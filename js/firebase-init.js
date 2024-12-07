@@ -18,5 +18,4 @@ const app = initializeApp(firebaseConfig);
 
 import getDatabase from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
 
-const db = getDatabase(app);
-export default db;
+export const db = getDatabase(app);
